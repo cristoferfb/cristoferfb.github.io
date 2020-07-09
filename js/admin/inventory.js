@@ -61,6 +61,7 @@ function setProduct (id) {
 	reloadInventory()
 }
 
+// import products from csv file
 function importFromCsv() {
 	$("#attachment").click()
     $("#attachment").one('change', () =>
@@ -85,6 +86,7 @@ function removeFromInventory (node, id) {
 	reloadInventory()
 }
 
+// reload inventory nodes
 let reloadInventory = () => $("#inventory").empty() && fillInventory()
 
 // get all products

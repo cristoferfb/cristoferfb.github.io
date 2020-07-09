@@ -31,18 +31,22 @@ function hideAllViews () {
 // evaluate login for redirect
 function evaluateLogin () {
 	userEmail = $('#inputUser').val()
+	let password  = $('#inputPassword').val()
 	clearAll()
-	switch (userEmail) {
-		case 'admin':
-			fillOrders()
-			fillInventory()
-			goTo('admin')
-			break
-		case 'user':
-			fillProductGallery()
-			goTo('user')
-			break
-		default:
-			$('#exampleModal').modal('show')
-	}
+	if (password)
+		$('#passwordModal').modal('show')
+	else
+		switch (userEmail) {
+			case 'admin':
+				fillOrders()
+				fillInventory()
+				goTo('admin')
+				break
+			case 'user':
+				fillProductGallery()
+				goTo('user')
+				break
+			default:
+				$('#userModal').modal('show')
+		}
 }

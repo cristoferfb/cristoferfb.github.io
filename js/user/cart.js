@@ -39,7 +39,6 @@ function getTotal(){
 	return totalValue
 }
 
-
 // add cart to orders list
 function processOrder () {
 	let reader = new FileReader()
@@ -51,8 +50,8 @@ function processOrder () {
 		generateOrder (null)
 }
 
+// generate the order
 function generateOrder (attachmentUrl) {
-	// generate the order
 	let order = [{
 		name: userEmail,
 		attachment: attachmentUrl,
@@ -80,8 +79,19 @@ function getCartNode (product) {
 			$('<div class="col-4"></div>').text(product.name),
 			$('<div class="col-3"></div>').text('$'+product.value),
 			$('<div class="col"></div>').append(
-				$('<input type="number" value="'+product.count+'" class="cartNodeCount">')),
+				$('<input onchange="updateCount()" type="number" value="'+product.count+'" class="cartNodeCount">')),
 			$('<div class="col text-right"></div>').append(
 				$('<button class="btn btn-danger" onclick="removeProduct(this,\''+product.name+'\')"></button>').append(
 					$('<i class="fas fa-trash-alt"></i>')))))
+}
+
+// Update count of every product by his input in the cart
+function updateCount () {
+	$('.cartNodeCount').map((index, node) => {
+		let inputCount = parseInt($(node).val())
+		if (_cart[index].count != inputCount) {
+			_cart[index].count = inputCount
+			$('#total').text('Total: $'+ getTotal())
+		}
+	})
 }

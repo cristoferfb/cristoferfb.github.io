@@ -16,4 +16,3 @@ function getProductNode (product, id) {
 			$('<btn class="btn btn-primary" onclick="addProductToCart('+id+')"/>')
 				.text("Buy")))
 }
-

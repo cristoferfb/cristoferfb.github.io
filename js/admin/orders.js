@@ -4,17 +4,17 @@ let _orders = []
 let fillOrders = () => _orders.forEach((order, index) => 
 		$("#orders").append(getOrderNode(order, index)))
 
-
+// download attachment from order
 function downloadAttachment (index) {
 	let link = document.createElement("a");
-  link.download = "print";
-  link.href = _orders[index][0].attachment;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+	link.download = "print";
+ 	link.href = _orders[index][0].attachment;
+	document.body.appendChild(link);
+	link.click();
+ 	document.body.removeChild(link);
 }
 
-// generate a order node
+// generate order node
 function getOrderNode (order, index) {
 	return $('<a class="list-group-item list-group-item-action" data-toggle="collapse" href="#collapseOrder'+index+'" role="button" aria-expanded="false" aria-controls="collapseOrder'+index+'"></a>')
 		.append(
@@ -39,6 +39,21 @@ function getOrderList (order) {
 		index != 0 && products.append(getOrderProduct(product)))
 	products.append(getTotalNode(order))
 	return products
+}
+
+// generate a total price display node
+function getTotalNode(order){
+	return $('<li class="list-group-item"></li>').append(
+		$('<div class="row"></div>').text('Total: $'+ getOrderTotal(order)))
+}
+
+// calculate the total of a order
+function getOrderTotal(order){
+	totalValue=0;
+	for(let i=1; i<order.length; i++){
+		totalValue = totalValue + (order[i].count * order[i].value)
+	}
+	return totalValue
 }
 
 // get node for display total
