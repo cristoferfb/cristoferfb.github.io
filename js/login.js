@@ -75,6 +75,10 @@ function checkPassword (user, pass) {
 function register () {
 	// check if user exist
 	let user = $('#inputUser').val()
+	if (user == "") {
+		$('#userExistModal').modal('show')
+		return
+	}
 	for (i=0; i<_accounts.length; i++) 
 		if (_accounts[i].user ===  user) {
 			$('#userExistModal').modal('show')
