@@ -1,3 +1,9 @@
+// accounts array
+let _accounts = [
+	{ user: "admin", pass: "", level: 1 },
+	{ user: "user", pass: "", level: 2 },
+] 
+
 // current logged user email
 let userEmail = ""
 
@@ -8,6 +14,8 @@ function clearAll () {
 	$('#products').empty()
 	$("#orders").empty()
 	$("#inventory").empty()
+	$('#inputUser').val("")
+	$('#inputPassword').val("")
 }
 
 // Go to specific view (login, user, admin)
@@ -31,22 +39,53 @@ function hideAllViews () {
 // evaluate login for redirect
 function evaluateLogin () {
 	userEmail = $('#inputUser').val()
-	let password  = $('#inputPassword').val()
+	// check login credentials
+	let level = checkPassword(userEmail, $('#inputPassword').val())
+	if (level < 1) {
+		$('#accountModal').modal('show')
+		return
+	}
+	// redirect to correct view on successful login
 	clearAll()
-	if (password)
-		$('#passwordModal').modal('show')
-	else
-		switch (userEmail) {
-			case 'admin':
-				fillOrders()
-				fillInventory()
-				goTo('admin')
+	switch (level) {
+		case 1:
+			fillOrders()
+			fillInventory()
+			goTo('admin')
+			break
+		case 2:
+			fillProductGallery()
+			goTo('user')
+			break
+	}
+}
+
+// check password and return access level of the account
+function checkPassword (user, pass) {
+	for (i=0; i<_accounts.length; i++)
+		if (_accounts[i].user === user)
+			if (_accounts[i].pass == pass)
+				return _accounts[i].level
+			else
 				break
-			case 'user':
-				fillProductGallery()
-				goTo('user')
-				break
-			default:
-				$('#userModal').modal('show')
+	return 0
+}	
+
+// register an account
+function register () {
+	// check if user exist
+	let user = $('#inputUser').val()
+	for (i=0; i<_accounts.length; i++) 
+		if (_accounts[i].user ===  user) {
+			$('#userExistModal').modal('show')
+			return
 		}
+	// register account
+	_accounts.push({
+		user: user,
+		pass: $('#inputPassword').val(),
+		level: 2
+	})
+	clearAll()
+	$('#registerModal').modal('show')
 }
